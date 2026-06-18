@@ -22,7 +22,16 @@ io.on("connection", (socket) => {
     socket.join(roomId);
     console.log(`${socket.id} joined room ${roomId}`);
   });
+
+  socket.on("draw-stroke", ({ roomId, strokeObject }) => {
+    socket.to(roomId).emit("draw-stroke", strokeObject);
+  });
+  
+  socket.on("clear-board", (roomId) => {
+    socket.to(roomId).emit("clear-board");
+  });
 });
+
 
 server.listen(3001, () => {
   console.log("server running on 3001");

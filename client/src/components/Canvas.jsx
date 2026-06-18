@@ -1,9 +1,8 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addStroke, clearBoard } from "../redux/slices/boardslice";
 import socket from "../socket/socket";
 const params = new URLSearchParams(window.location.search);
-
 
 const Canvas = () => {
   const canvasRef = useRef(null);
@@ -12,7 +11,18 @@ const Canvas = () => {
   const currentStrokeRef = useRef([]);
   const dispatch = useDispatch();
   const strokes = useSelector((state) => state.board.strokes);
-  const roomId = params.get("room") || "default-room";
+  const [roomId, setRoomId] = useState(null);
+
+  useEffect(() => {
+    const existingRoom = params.get("room");
+    if (existingRoom) {
+      setRoomId(existingRoom);
+    } else {
+      const newRoom = crypto.randomUUID();
+      window.history.replaceState(null, "", "?room=" + newRoom);
+      setRoomId(newRoom);
+    }
+  }, []);
 
   useEffect(() => {
     canvasRef.current.width = 800;
@@ -63,6 +73,7 @@ const Canvas = () => {
     };
 
     dispatch(addStroke(strokeObject));
+    socket.emit("draw-stroke", { roomId, strokeObject });
     currentStrokeRef.current = [];
   };
 
@@ -102,20 +113,37 @@ const Canvas = () => {
   const handleClearClick = () => {
     clearCanvas();
     dispatch(clearBoard());
+    socket.emit("clear-board", roomId);
   };
 
   useEffect(() => {
-    const handleConnect = () => {
+    socket.on("connect", () => {
       console.log("connected:", socket.id);
-      socket.emit("join-room", roomId);
+    });
+  }, []);
+
+  useEffect(() => {
+    const handleIncomingStroke = (strokeObject) =>
+      dispatch(addStroke(strokeObject));
+    const handleIncomingClear = () => {
+      clearCanvas();
+      dispatch(clearBoard());
     };
 
-    socket.on("connect", handleConnect);
+    socket.on("draw-stroke", handleIncomingStroke);
+    socket.on("clear-board", handleIncomingClear);
 
     return () => {
-      socket.off("connect", handleConnect);
+      socket.off("draw-stroke", handleIncomingStroke);
+      socket.off("clear-board", handleIncomingClear);
     };
-  }, [roomId]);
+  }, []);
+
+  //To be removed
+  useEffect(() => {
+    if (!roomId) return;
+    socket.emit("join-room", roomId);
+  }, [roomId]); 
 
   return (
     <div>
