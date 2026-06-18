@@ -1,9 +1,14 @@
 import { useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addStroke , clearBoard} from "../redux/slices/boardslice";
 
 const Canvas = () => {
   const canvasRef = useRef(null);
   const ctxRef = useRef(null);
   const isDrawingRef = useRef(false);
+  const currentStrokeRef = useRef([]);
+  const dispatch = useDispatch();
+  const strokes = useSelector((state) => state.board.strokes);
 
   useEffect(() => {
     canvasRef.current.width = 800;
@@ -23,6 +28,7 @@ const Canvas = () => {
     const y = e.clientY - rect.top;
 
     isDrawingRef.current = true;
+    currentStrokeRef.current = [{ x, y }];
 
     ctxRef.current.beginPath();
     ctxRef.current.moveTo(x, y);
@@ -36,13 +42,26 @@ const Canvas = () => {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
+    currentStrokeRef.current.push({ x, y });
+
     ctxRef.current.lineTo(x, y);
     ctxRef.current.stroke();
   };
 
-  const stopDrawing = (e) => {
+  const stopDrawing = () => {
     isDrawingRef.current = false;
+
+    const strokeObject = {
+      id: Date.now(),
+      color: "black",
+      width: 3,
+      points: currentStrokeRef.current,
+    };
+
+    dispatch(addStroke(strokeObject));
+    currentStrokeRef.current = [];
   };
+
   const clearCanvas = () => {
     ctxRef.current.clearRect(
       0,
@@ -51,6 +70,36 @@ const Canvas = () => {
       canvasRef.current.height,
     );
   };
+
+  const redrawEverything = () => {
+    clearCanvas();
+
+    for (const stroke of strokes) {
+      ctxRef.current.strokeStyle = stroke.color;
+      ctxRef.current.lineWidth = stroke.width;
+      ctxRef.current.beginPath();
+
+      for (let index = 0; index < stroke.points.length; index++) {
+        const point = stroke.points[index];
+        if (index === 0) {
+          ctxRef.current.moveTo(point.x, point.y);
+        } else {
+          ctxRef.current.lineTo(point.x, point.y);
+        }
+      }
+      ctxRef.current.stroke();
+    }
+  };
+
+  useEffect(() => {
+    redrawEverything();
+  }, [strokes]);
+
+  const handleClearClick = () => {
+    clearCanvas();
+    dispatch(clearBoard());
+  };
+
   return (
     <div>
       <canvas
@@ -61,7 +110,9 @@ const Canvas = () => {
         onMouseLeave={stopDrawing}
         className="border border-gray-300 rounded-lg shadow-md bg-white cursor-crosshair"
       ></canvas>
-      <button onClick={clearCanvas} className="border bg-amber-700 p-2 m-2">Clear</button>
+      <button onClick={handleClearClick} className="border bg-amber-700 p-2 m-2">
+        Clear
+      </button>
     </div>
   );
 };
