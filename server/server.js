@@ -17,6 +17,11 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   console.log("client connected:", socket.id);
+
+  socket.on("join-room", (roomId) => {
+    socket.join(roomId);
+    console.log(`${socket.id} joined room ${roomId}`);
+  });
 });
 
 server.listen(3001, () => {

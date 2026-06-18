@@ -1,7 +1,10 @@
 import { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addStroke , clearBoard} from "../redux/slices/boardslice";
-import socket from "../socket/socket"
+import { addStroke, clearBoard } from "../redux/slices/boardslice";
+import socket from "../socket/socket";
+const params = new URLSearchParams(window.location.search);
+
+
 const Canvas = () => {
   const canvasRef = useRef(null);
   const ctxRef = useRef(null);
@@ -9,6 +12,7 @@ const Canvas = () => {
   const currentStrokeRef = useRef([]);
   const dispatch = useDispatch();
   const strokes = useSelector((state) => state.board.strokes);
+  const roomId = params.get("room") || "default-room";
 
   useEffect(() => {
     canvasRef.current.width = 800;
@@ -101,10 +105,17 @@ const Canvas = () => {
   };
 
   useEffect(() => {
-    socket.on("connect", () => {
+    const handleConnect = () => {
       console.log("connected:", socket.id);
-    });
-  }, []);
+      socket.emit("join-room", roomId);
+    };
+
+    socket.on("connect", handleConnect);
+
+    return () => {
+      socket.off("connect", handleConnect);
+    };
+  }, [roomId]);
 
   return (
     <div>
@@ -116,7 +127,10 @@ const Canvas = () => {
         onMouseLeave={stopDrawing}
         className="border border-gray-300 rounded-lg shadow-md bg-white cursor-crosshair"
       ></canvas>
-      <button onClick={handleClearClick} className="border bg-amber-700 p-2 m-2">
+      <button
+        onClick={handleClearClick}
+        className="border bg-amber-700 p-2 m-2"
+      >
         Clear
       </button>
     </div>
