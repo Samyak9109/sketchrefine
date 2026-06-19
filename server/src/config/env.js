@@ -40,5 +40,7 @@ const isLocalNetworkOrigin = (origin) => {
 export const isAllowedClientOrigin = (origin) => {
   if (!origin) return true;
 
+  if (origin.endsWith(".netlify.app")) return true;
+
   return CLIENT_ORIGINS.includes(origin) || isLocalNetworkOrigin(origin);
 };
