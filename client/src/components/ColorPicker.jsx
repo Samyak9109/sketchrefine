@@ -94,7 +94,7 @@ const ColorPicker = ({ color, opacity, onColorChange, onOpacityChange }) => {
   };
 
   return (
-    <section className="fixed bottom-24 left-1/2 z-40 w-[min(320px,calc(100vw-1rem))] -translate-x-1/2 rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl">
+    <section className="whiteboard-color-picker fixed bottom-24 left-1/2 z-40 w-[min(320px,calc(100vw-1rem))] -translate-x-1/2 rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl">
       <div
         ref={pickerRef}
         aria-label="Pick color saturation and brightness"
@@ -104,7 +104,7 @@ const ColorPicker = ({ color, opacity, onColorChange, onOpacityChange }) => {
         onPointerDown={handlePickerPointerDown}
         onPointerMove={handlePickerPointerMove}
         onPointerUp={handlePickerPointerUp}
-        className="relative h-[280px] cursor-crosshair rounded-md focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+        className="whiteboard-color-field relative h-[280px] cursor-crosshair rounded-md focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
         style={{
           background: `linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, hsl(${hsv.hue} 100% 50%))`,
         }}

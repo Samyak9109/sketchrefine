@@ -109,8 +109,49 @@ VITE_SOCKET_URL=https://your-socket-server.example.com
 
 The frontend can be hosted on Netlify, but the Socket.IO backend needs a
 separate long-running Node host such as Render, Railway, Fly.io, or a VPS.
-After deploying the backend, set `CLIENT_ORIGIN` on the server to your Netlify
-site URL.
+Netlify's static hosting is not enough for the `server/` app.
+
+Deploy the backend from the `server/` directory with:
+
+```bash
+npm install
+npm start
+```
+
+Then set these variables:
+
+Netlify:
+
+```bash
+VITE_SOCKET_URL=https://your-backend-host.example.com
+```
+
+Backend host:
+
+```bash
+CLIENT_ORIGIN=https://your-netlify-site.netlify.app
+NODE_ENV=production
+```
+
+Most Node hosts provide `PORT` automatically. Only set `PORT` yourself if your
+host asks you to.
+
+If you use a custom domain and the Netlify preview domain, separate allowed
+origins with commas:
+
+```bash
+CLIENT_ORIGIN=https://your-domain.com,https://your-netlify-site.netlify.app
+```
+
+After deploying the backend, open `https://your-backend-host.example.com/health`.
+It should return:
+
+```json
+{ "ok": true }
+```
+
+After changing `VITE_SOCKET_URL` in Netlify, trigger a new deploy because Vite
+environment variables are baked into the frontend at build time.
 
 ## Notes
 

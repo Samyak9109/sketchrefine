@@ -175,7 +175,7 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
 
   return (
     <>
-      <header className="fixed left-0 right-0 top-0 z-30 flex items-center justify-between gap-3 px-4 py-3 sm:px-5">
+      <header className="whiteboard-header fixed left-0 right-0 top-0 z-30 flex items-center justify-between gap-3 px-4 py-3 sm:px-5">
         <div
           className={`flex items-center gap-2 rounded-lg border px-3 py-2 shadow-sm backdrop-blur ${surfaceClass}`}
         >
@@ -208,7 +208,7 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
 
       {isRoomPanelOpen && (
         <section
-          className={`fixed bottom-20 left-4 z-40 w-[min(360px,calc(100vw-1rem))] rounded-2xl border p-4 shadow-2xl ${surfaceClass}`}
+          className={`whiteboard-room-panel fixed bottom-20 left-4 z-40 w-[min(360px,calc(100vw-1rem))] rounded-2xl border p-4 shadow-2xl ${surfaceClass}`}
         >
           <div className="flex items-start gap-3">
             <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-blue-600/10 text-blue-600">
@@ -307,7 +307,7 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
 
       {isShapePaletteOpen && (
         <div
-          className={`fixed bottom-20 left-1/2 z-30 grid max-w-[calc(100vw-1rem)] -translate-x-1/2 grid-cols-4 gap-2 rounded-lg border p-2 shadow-lg backdrop-blur sm:grid-cols-6 ${surfaceClass}`}
+          className={`whiteboard-shape-palette fixed bottom-20 left-1/2 z-30 grid max-w-[calc(100vw-1rem)] -translate-x-1/2 grid-cols-4 gap-2 rounded-lg border p-2 shadow-lg backdrop-blur sm:grid-cols-6 ${surfaceClass}`}
         >
           {shapes.map(({ id, label, Icon }) => (
             <ToolButton
@@ -333,7 +333,7 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
       )}
 
       <div
-        className={`fixed bottom-4 left-1/2 z-30 flex max-w-[calc(100vw-1rem)] -translate-x-1/2 items-center gap-2 overflow-x-auto rounded-lg border p-2 shadow-lg backdrop-blur ${surfaceClass}`}
+        className={`whiteboard-tool-dock fixed bottom-4 left-1/2 z-30 flex max-w-[calc(100vw-1rem)] -translate-x-1/2 items-center gap-2 overflow-x-auto rounded-lg border p-2 shadow-lg backdrop-blur ${surfaceClass}`}
       >
         <div className="flex items-center gap-1">
           {tools.map(({ id, label, Icon }) => (
@@ -437,7 +437,7 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
           setRoomInput("");
           setIsRoomPanelOpen((current) => !current);
         }}
-        className={`fixed bottom-4 left-4 z-30 flex min-h-11 max-w-[min(320px,calc(100vw-2rem))] cursor-pointer items-center gap-2 rounded-lg border px-3 text-sm font-semibold shadow-sm backdrop-blur transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
+        className={`whiteboard-room-button fixed bottom-4 left-4 z-30 flex min-h-11 max-w-[min(320px,calc(100vw-2rem))] cursor-pointer items-center gap-2 rounded-lg border px-3 text-sm font-semibold shadow-sm backdrop-blur transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
           isRoomPanelOpen
             ? "border-blue-500 bg-blue-50 text-blue-800"
             : isDark
@@ -446,7 +446,7 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
         }`}
       >
         <Users size={17} strokeWidth={1.8} />
-        <span className={mutedTextClass}>Room</span>
+        <span className={`whiteboard-room-prefix ${mutedTextClass}`}>Room</span>
         <span className={`truncate ${strongTextClass}`}>{visibleRoomId}</span>
       </button>
     </>

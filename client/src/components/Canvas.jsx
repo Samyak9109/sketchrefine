@@ -114,6 +114,7 @@ const Canvas = ({ roomId }) => {
   );
 
   const startDrawing = (event) => {
+    event.currentTarget.setPointerCapture?.(event.pointerId);
     window.dispatchEvent(new CustomEvent("whiteboard:board-pointerdown"));
     const point = getCanvasPoint(event);
     const strokeColor = getStrokeColor(tool, color, opacity);
@@ -263,7 +264,9 @@ const Canvas = ({ roomId }) => {
     socket.emit("draw-segment", { roomId, segment });
   };
 
-  const stopDrawing = () => {
+  const stopDrawing = (event) => {
+    event?.currentTarget?.releasePointerCapture?.(event.pointerId);
+
     if (!isDrawingRef.current) return;
 
     isDrawingRef.current = false;
@@ -336,7 +339,7 @@ const Canvas = ({ roomId }) => {
     socket.emit("draw-stroke", { roomId, strokeObject });
   };
 
-  const handleMouseMove = (event) => {
+  const handlePointerMove = (event) => {
     const { x, y } = getCanvasPoint(event);
 
     setEraserCursor(tool === "eraser" ? { x, y } : null);
@@ -344,7 +347,7 @@ const Canvas = ({ roomId }) => {
     draw(event);
   };
 
-  const handleMouseLeave = () => {
+  const handlePointerLeave = () => {
     setEraserCursor(null);
     stopDrawing();
   };
@@ -544,11 +547,12 @@ const Canvas = ({ roomId }) => {
       >
         <canvas
           ref={canvasRef}
-          onMouseDown={startDrawing}
-          onMouseMove={handleMouseMove}
-          onMouseUp={stopDrawing}
-          onMouseLeave={handleMouseLeave}
-          className={`h-full w-full ${
+          onPointerDown={startDrawing}
+          onPointerMove={handlePointerMove}
+          onPointerUp={stopDrawing}
+          onPointerCancel={stopDrawing}
+          onPointerLeave={handlePointerLeave}
+          className={`h-full w-full touch-none ${
             isDark && tool !== "eraser"
               ? "whiteboard-canvas--white-cursor"
               : tool === "text"
@@ -635,7 +639,7 @@ const Canvas = ({ roomId }) => {
       </div>
 
       <div
-        className={`fixed bottom-4 right-4 z-30 flex items-center gap-1 rounded-lg border p-1 shadow-lg backdrop-blur ${
+        className={`whiteboard-actions fixed bottom-4 right-4 z-30 flex items-center gap-1 rounded-lg border p-1 shadow-lg backdrop-blur ${
           isDark
             ? "border-slate-700 bg-slate-950/92"
             : "border-slate-200 bg-white/95"
@@ -650,7 +654,7 @@ const Canvas = ({ roomId }) => {
           <Minus size={18} strokeWidth={1.8} />
         </button>
         <span
-          className={`min-w-14 px-2 text-center text-sm font-semibold tabular-nums ${
+          className={`whiteboard-zoom-label min-w-14 px-2 text-center text-sm font-semibold tabular-nums ${
             isDark ? "text-slate-200" : "text-slate-700"
           }`}
         >

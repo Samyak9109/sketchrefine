@@ -75,3 +75,98 @@ select {
   background: #7c3aed;
   box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.2);
 }
+
+.whiteboard-header {
+  padding-top: calc(0.75rem + env(safe-area-inset-top, 0px));
+}
+
+.whiteboard-tool-dock,
+.whiteboard-actions,
+.whiteboard-room-button {
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+}
+
+.whiteboard-tool-dock {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.whiteboard-tool-dock::-webkit-scrollbar {
+  display: none;
+}
+
+.whiteboard-shape-palette {
+  bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+}
+
+.whiteboard-color-picker {
+  bottom: calc(5.75rem + env(safe-area-inset-bottom, 0px));
+}
+
+@media (max-width: 767px) {
+  .whiteboard-tool-dock {
+    left: 0.5rem;
+    right: 0.5rem;
+    width: auto;
+    max-width: none;
+    justify-content: flex-start;
+    translate: none;
+    transform: none;
+  }
+
+  .whiteboard-room-button {
+    top: calc(4.25rem + env(safe-area-inset-top, 0px));
+    bottom: auto;
+    left: 0.75rem;
+    max-width: min(14rem, calc(100vw - 6rem));
+  }
+
+  .whiteboard-actions {
+    top: calc(4.25rem + env(safe-area-inset-top, 0px));
+    right: 0.75rem;
+    bottom: auto;
+    flex-direction: column;
+  }
+
+  .whiteboard-zoom-label {
+    min-width: 2.75rem;
+    padding: 0.125rem 0;
+    font-size: 0.75rem;
+  }
+
+  .whiteboard-room-panel {
+    top: calc(8rem + env(safe-area-inset-top, 0px));
+    bottom: auto;
+    left: 0.75rem;
+    width: min(360px, calc(100vw - 1.5rem));
+    max-height: calc(100dvh - 13rem);
+    overflow-y: auto;
+  }
+
+  .whiteboard-shape-palette {
+    bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+    max-height: calc(100dvh - 10rem);
+    overflow-y: auto;
+  }
+
+  .whiteboard-color-picker {
+    bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+    max-height: calc(100dvh - 9rem);
+    overflow-y: auto;
+    padding: 1rem;
+  }
+
+  .whiteboard-color-field {
+    height: clamp(10rem, 35dvh, 17.5rem);
+  }
+}
+
+@media (max-width: 420px) {
+  .whiteboard-room-button {
+    max-width: min(10.5rem, calc(100vw - 6rem));
+  }
+
+  .whiteboard-room-prefix {
+    display: none;
+  }
+}
