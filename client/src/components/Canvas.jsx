@@ -145,6 +145,19 @@ const Canvas = () => {
     socket.emit("join-room", roomId);
   }, [roomId]); 
 
+  useEffect(() => {
+    const handleLoadBoard = (strokesArray) => {
+      strokesArray.forEach((stroke) => {
+        dispatch(addStroke(stroke));
+      });
+    };
+
+    socket.on("load-board", handleLoadBoard);
+
+    return () => {
+      socket.off("load-board", handleLoadBoard);
+    };
+  }, []);
   return (
     <div>
       <canvas
