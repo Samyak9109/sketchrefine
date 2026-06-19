@@ -202,10 +202,9 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
             type="button"
             aria-label="Export board as image"
             onClick={handleExportImage}
-            className="flex min-h-11 cursor-pointer items-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            className="flex min-h-11 min-w-11 cursor-pointer items-center justify-center gap-2 rounded-lg bg-blue-600 px-3 text-sm font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           >
-            <Download size={16} strokeWidth={1.9} />
-            <span className="hidden sm:inline">Export image</span>
+            <Download size={18} strokeWidth={1.9} />
           </button>
         </div>
       </header>
@@ -337,7 +336,7 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
       )}
 
       <div
-        className={`whiteboard-tool-dock fixed bottom-4 left-1/2 z-30 flex max-w-[calc(100vw-1rem)] -translate-x-1/2 items-center gap-2 overflow-x-auto rounded-lg border p-2 shadow-lg backdrop-blur ${surfaceClass}`}
+        className={`whiteboard-tool-dock fixed bottom-4 left-1/2 z-30 flex max-w-[calc(100vw-1rem)] w-[calc(100vw-1rem)] sm:w-max flex-wrap justify-center -translate-x-1/2 items-center gap-2 rounded-lg border p-2 shadow-lg backdrop-blur ${surfaceClass}`}
       >
         <div className="flex items-center gap-1">
           {tools.map(({ id, label, Icon }) => (
@@ -353,7 +352,7 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
           ))}
         </div>
 
-        <div className={`h-8 w-px shrink-0 ${isDark ? "bg-slate-700" : "bg-slate-200"}`} />
+        <div className={`hidden sm:block h-8 w-px shrink-0 ${isDark ? "bg-slate-700" : "bg-slate-200"}`} />
 
         <button
           type="button"
@@ -400,7 +399,7 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
           />
         </label>
 
-        <div className={`h-8 w-px shrink-0 ${isDark ? "bg-slate-700" : "bg-slate-200"}`} />
+        <div className={`hidden sm:block h-8 w-px shrink-0 ${isDark ? "bg-slate-700" : "bg-slate-200"}`} />
 
         <div
           className={`flex min-h-11 items-center rounded-md border p-1 ${

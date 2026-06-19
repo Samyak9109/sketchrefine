@@ -639,7 +639,7 @@ const Canvas = ({ roomId }) => {
       </div>
 
       <div
-        className={`whiteboard-actions fixed top-16 sm:top-auto bottom-auto sm:bottom-4 right-4 z-30 flex items-center gap-1 rounded-lg border p-1 shadow-lg backdrop-blur ${
+        className={`whiteboard-actions fixed top-20 right-4 z-30 flex flex-col items-center gap-1 rounded-lg border p-1 shadow-lg backdrop-blur ${
           isDark
             ? "border-slate-700 bg-slate-950/92"
             : "border-slate-200 bg-white/95"
