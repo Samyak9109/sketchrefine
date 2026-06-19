@@ -1,8 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
+import {
+  DEFAULT_DRAWING_COLOR,
+  DEFAULT_STROKE_WIDTH,
+} from "../../constants/whiteboard.js";
+import { loadAppearance } from "../../utils/appearanceStorage.js";
+
+const savedAppearance = loadAppearance();
 
 const initialState = {
-  color: "black",
-  width: 3,
+  color: DEFAULT_DRAWING_COLOR,
+  opacity: 1,
+  width: DEFAULT_STROKE_WIDTH,
+  tool: "pen",
+  shape: "rectangle",
+  theme: savedAppearance.theme,
+  pageStyle: savedAppearance.pageStyle,
 };
 
 export const toolSlice = createSlice({
@@ -12,11 +24,39 @@ export const toolSlice = createSlice({
     setColor: (state, action) => {
       state.color = action.payload;
     },
+    setOpacity: (state, action) => {
+      state.opacity = action.payload;
+    },
     setWidth: (state, action) => {
       state.width = action.payload;
+    },
+    setTool: (state, action) => {
+      state.tool = action.payload;
+    },
+    setShape: (state, action) => {
+      state.shape = action.payload;
+      state.tool = "shape";
+    },
+    setTheme: (state, action) => {
+      state.theme = action.payload;
+    },
+    toggleTheme: (state) => {
+      state.theme = state.theme === "dark" ? "light" : "dark";
+    },
+    setPageStyle: (state, action) => {
+      state.pageStyle = action.payload;
     },
   },
 });
 
-export const { setColor, setWidth } = toolSlice.actions;
+export const {
+  setColor,
+  setOpacity,
+  setWidth,
+  setTool,
+  setShape,
+  setTheme,
+  toggleTheme,
+  setPageStyle,
+} = toolSlice.actions;
 export default toolSlice.reducer;

@@ -1,1 +1,77 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
+
+:root {
+  font-family:
+    "Plus Jakarta Sans",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  color: #1e293b;
+  background: #f8fafc;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.whiteboard-canvas--white-cursor {
+  cursor:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 3v5M12 16v5M3 12h5M16 12h5' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='12' r='4.5' fill='rgba(255,255,255,0.24)' stroke='white' stroke-width='2'/%3E%3C/svg%3E")
+      12 12,
+    crosshair;
+}
+
+.color-slider {
+  background: linear-gradient(
+    90deg,
+    #ff0000,
+    #ffff00,
+    #00ff00,
+    #00ffff,
+    #0000ff,
+    #ff00ff,
+    #ff0000
+  );
+}
+
+.opacity-slider {
+  background:
+    linear-gradient(90deg, transparent, var(--picker-color)),
+    repeating-conic-gradient(#d1d5db 0 25%, transparent 0 50%) 0 / 12px 12px;
+}
+
+.color-slider::-webkit-slider-thumb,
+.opacity-slider::-webkit-slider-thumb {
+  width: 18px;
+  height: 18px;
+  appearance: none;
+  cursor: pointer;
+  border: 3px solid #ffffff;
+  border-radius: 999px;
+  background: #7c3aed;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.2);
+}
+
+.color-slider::-moz-range-thumb,
+.opacity-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  border: 3px solid #ffffff;
+  border-radius: 999px;
+  background: #7c3aed;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.2);
+}
