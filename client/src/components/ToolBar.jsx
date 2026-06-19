@@ -350,9 +350,9 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
       )}
 
       <div
-        className={`whiteboard-tool-dock fixed bottom-4 left-1/2 z-30 ${
+        className={`whiteboard-tool-dock fixed bottom-16 sm:bottom-4 left-1/2 z-30 ${
           isMobileMenuOpen ? "flex" : "hidden sm:flex"
-        } w-fit max-w-[calc(100vw-1rem)] flex-wrap justify-center -translate-x-1/2 items-center gap-2 rounded-lg border p-2 shadow-lg backdrop-blur ${surfaceClass}`}
+        } w-[calc(100vw-2rem)] sm:w-max max-w-full flex-wrap justify-center -translate-x-1/2 items-center gap-2 rounded-xl border p-2 shadow-2xl backdrop-blur ${surfaceClass}`}
       >
         <div className="flex flex-wrap justify-center items-center gap-1">
           {tools.map(({ id, label, Icon }) => (
