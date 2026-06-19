@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addStroke, clearBoard } from "../redux/slices/boardslice";
 import socket from "../socket/socket";
+
 const params = new URLSearchParams(window.location.search);
 
 const Canvas = () => {
@@ -11,6 +12,8 @@ const Canvas = () => {
   const currentStrokeRef = useRef([]);
   const dispatch = useDispatch();
   const strokes = useSelector((state) => state.board.strokes);
+  const color = useSelector((state) => state.tools.color);
+  const width = useSelector((state) => state.tools.width);
   const [roomId, setRoomId] = useState(null);
 
   useEffect(() => {
@@ -41,6 +44,9 @@ const Canvas = () => {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
+    ctxRef.current.strokeStyle = color;
+    ctxRef.current.lineWidth = width;
+
     isDrawingRef.current = true;
     currentStrokeRef.current = [{ x, y }];
 
@@ -67,8 +73,8 @@ const Canvas = () => {
 
     const strokeObject = {
       id: Date.now(),
-      color: "black",
-      width: 3,
+      color: color,
+      width: width,
       points: currentStrokeRef.current,
     };
 
@@ -139,11 +145,10 @@ const Canvas = () => {
     };
   }, []);
 
-  //To be removed
   useEffect(() => {
     if (!roomId) return;
     socket.emit("join-room", roomId);
-  }, [roomId]); 
+  }, [roomId]);
 
   useEffect(() => {
     const handleLoadBoard = (strokesArray) => {
@@ -158,6 +163,7 @@ const Canvas = () => {
       socket.off("load-board", handleLoadBoard);
     };
   }, []);
+
   return (
     <div>
       <canvas
