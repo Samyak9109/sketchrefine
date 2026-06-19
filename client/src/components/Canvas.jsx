@@ -15,6 +15,7 @@ const Canvas = () => {
   const color = useSelector((state) => state.tools.color);
   const width = useSelector((state) => state.tools.width);
   const [roomId, setRoomId] = useState(null);
+  const [cursors, setCursors] = useState({}); // NEW: { socketId: {x, y} }
 
   useEffect(() => {
     const existingRoom = params.get("room");
@@ -92,6 +93,16 @@ const Canvas = () => {
     );
   };
 
+  const handleMouseMove = (e) => {
+    const rect = canvasRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    socket.emit("cursor-move", { roomId, x, y });
+
+    draw(e);
+  };
+
   const redrawEverything = () => {
     clearCanvas();
 
@@ -164,16 +175,48 @@ const Canvas = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const handleCursorMove = ({ x, y, socketId }) => {
+      setCursors((prev) => ({
+        ...prev,
+        [socketId]: { x, y },
+      }));
+    };
+
+    socket.on("cursor-move", handleCursorMove);
+
+    return () => {
+      socket.off("cursor-move", handleCursorMove);
+    };
+  }, []);
+
   return (
-    <div>
+    <div style={{ position: "relative", width: 800, height: 600 }}>
       <canvas
         ref={canvasRef}
         onMouseDown={startDrawing}
-        onMouseMove={draw}
+        onMouseMove={handleMouseMove}
         onMouseUp={stopDrawing}
         onMouseLeave={stopDrawing}
         className="border border-gray-300 rounded-lg shadow-md bg-white cursor-crosshair"
       ></canvas>
+
+      {Object.entries(cursors).map(([socketId, pos]) => (
+        <div
+          key={socketId}
+          style={{
+            position: "absolute",
+            left: pos.x,
+            top: pos.y,
+            width: 10,
+            height: 10,
+            borderRadius: "50%",
+            backgroundColor: "red",
+            pointerEvents: "none",
+          }}
+        />
+      ))}
+
       <button
         onClick={handleClearClick}
         className="border bg-amber-700 p-2 m-2"

@@ -39,6 +39,10 @@ io.on("connection", (socket) => {
     socket.to(roomId).emit("draw-stroke", strokeObject);
   });
 
+  socket.on("cursor-move", ({ roomId, x, y }) => {
+    socket.to(roomId).emit("cursor-move", { x, y, socketId: socket.id });
+  });
+  
   socket.on("clear-board", (roomId) => {
     roomBoards[roomId] = [];
     socket.to(roomId).emit("clear-board");
