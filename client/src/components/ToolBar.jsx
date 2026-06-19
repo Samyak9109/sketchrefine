@@ -24,6 +24,7 @@ import {
   Sun,
   Type,
   Users,
+  Wrench,
 } from "lucide-react";
 import {
   setPageStyle,
@@ -98,6 +99,7 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
   const [isRoomPanelOpen, setIsRoomPanelOpen] = useState(false);
   const [roomInput, setRoomInput] = useState("");
   const [isRoomCopied, setIsRoomCopied] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleExportImage = () => {
     window.dispatchEvent(new CustomEvent("whiteboard:export-image"));
@@ -169,6 +171,7 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
       setIsColorPickerOpen(false);
       setIsShapePaletteOpen(false);
       setIsRoomPanelOpen(false);
+      setIsMobileMenuOpen(false);
     };
 
     window.addEventListener("whiteboard:board-pointerdown", closePanels);
@@ -335,8 +338,21 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
         />
       )}
 
+      {!isMobileMenuOpen && (
+        <button
+          type="button"
+          aria-label="Open tools"
+          onClick={() => setIsMobileMenuOpen(true)}
+          className="sm:hidden fixed bottom-4 left-1/2 z-30 flex min-h-12 min-w-12 -translate-x-1/2 cursor-pointer items-center justify-center rounded-full bg-blue-600 text-white shadow-2xl transition-transform active:scale-95 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+        >
+          <Wrench size={22} strokeWidth={2} />
+        </button>
+      )}
+
       <div
-        className={`whiteboard-tool-dock fixed bottom-4 left-1/2 z-30 flex w-max max-w-[calc(100vw-1rem)] flex-wrap justify-center -translate-x-1/2 items-center gap-2 rounded-lg border p-2 shadow-lg backdrop-blur ${surfaceClass}`}
+        className={`whiteboard-tool-dock fixed bottom-4 left-1/2 z-30 ${
+          isMobileMenuOpen ? "flex" : "hidden sm:flex"
+        } w-max max-w-[calc(100vw-1rem)] flex-wrap justify-center -translate-x-1/2 items-center gap-2 rounded-lg border p-2 shadow-lg backdrop-blur ${surfaceClass}`}
       >
         <div className="flex items-center gap-1">
           {tools.map(({ id, label, Icon }) => (
