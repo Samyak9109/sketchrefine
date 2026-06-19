@@ -212,7 +212,7 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
 
       {isRoomPanelOpen && (
         <section
-          className={`whiteboard-room-panel fixed bottom-20 left-4 z-40 w-[min(360px,calc(100vw-1rem))] rounded-2xl border p-4 shadow-2xl ${surfaceClass}`}
+          className={`whiteboard-room-panel fixed top-32 sm:top-auto bottom-auto sm:bottom-20 left-4 z-40 w-[min(360px,calc(100vw-1rem))] rounded-2xl border p-4 shadow-2xl ${surfaceClass}`}
         >
           <div className="flex items-start gap-3">
             <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-blue-600/10 text-blue-600">
@@ -441,7 +441,7 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
           setRoomInput("");
           setIsRoomPanelOpen((current) => !current);
         }}
-        className={`whiteboard-room-button fixed bottom-4 left-4 z-30 flex min-h-11 max-w-[min(320px,calc(100vw-2rem))] cursor-pointer items-center gap-2 rounded-lg border px-3 text-sm font-semibold shadow-sm backdrop-blur transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
+        className={`whiteboard-room-button fixed top-16 sm:top-auto bottom-auto sm:bottom-4 left-4 z-30 flex min-h-11 max-w-[min(320px,calc(100vw-2rem))] cursor-pointer items-center gap-2 rounded-lg border px-3 text-sm font-semibold shadow-sm backdrop-blur transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
           isRoomPanelOpen
             ? "border-blue-500 bg-blue-50 text-blue-800"
             : isDark
