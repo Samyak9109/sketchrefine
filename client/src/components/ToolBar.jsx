@@ -338,6 +338,7 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
         />
       )}
 
+      {/* Mobile: FAB wrench button */}
       {!isMobileMenuOpen && (
         <button
           type="button"
@@ -349,12 +350,130 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
         </button>
       )}
 
+      {/* Mobile: Bottom sheet panel */}
+      {isMobileMenuOpen && (
+        <div
+          className={`sm:hidden fixed inset-x-0 bottom-0 z-40 rounded-t-2xl border-t p-4 shadow-2xl backdrop-blur ${surfaceClass}`}
+        >
+          {/* Close button */}
+          <div className="mb-3 flex items-center justify-between">
+            <span className={`text-xs font-bold uppercase tracking-wider ${mutedTextClass}`}>Tools</span>
+            <button
+              type="button"
+              aria-label="Close tools"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`grid h-8 w-8 cursor-pointer place-items-center rounded-full transition-colors ${
+                isDark ? "hover:bg-slate-800 text-slate-300" : "hover:bg-slate-100 text-slate-500"
+              }`}
+            >
+              <Plus size={18} strokeWidth={2} className="rotate-45" />
+            </button>
+          </div>
+
+          {/* Drawing tools grid */}
+          <div className="grid grid-cols-6 gap-1">
+            {tools.map(({ id, label, Icon }) => (
+              <ToolButton
+                key={id}
+                label={label}
+                active={tool === id}
+                theme={theme}
+                onClick={() => handleToolClick(id)}
+              >
+                <Icon size={18} strokeWidth={1.8} />
+              </ToolButton>
+            ))}
+          </div>
+
+          {/* Color + Width row */}
+          <div className="mt-3 flex items-center gap-2">
+            <button
+              type="button"
+              aria-label="Open color picker"
+              title="Color"
+              onClick={() => {
+                setIsShapePaletteOpen(false);
+                setIsColorPickerOpen((current) => !current);
+              }}
+              className={`grid min-h-11 min-w-11 shrink-0 cursor-pointer place-items-center rounded-md border transition-colors duration-200 ${
+                isColorPickerOpen
+                  ? "border-violet-500 bg-violet-50"
+                  : isDark
+                    ? "border-slate-700 bg-slate-950 hover:bg-slate-800"
+                    : "border-slate-200 bg-white hover:bg-slate-50"
+              }`}
+            >
+              <span
+                className="h-7 w-7 rounded-full border border-slate-200 shadow-inner"
+                style={{ backgroundColor: color, opacity }}
+              />
+            </button>
+
+            <label
+              className={`flex min-h-11 flex-1 items-center gap-2 rounded-md border px-3 ${
+                isDark ? "border-slate-700 bg-slate-950" : "border-slate-200 bg-white"
+              }`}
+            >
+              <span
+                className={`text-xs font-semibold tabular-nums ${
+                  isDark ? "text-slate-300" : "text-slate-600"
+                }`}
+              >
+                {width}px
+              </span>
+              <input
+                aria-label="Stroke width"
+                className="min-w-0 flex-1 cursor-pointer accent-blue-600"
+                type="range"
+                min="1"
+                max="32"
+                value={width}
+                onChange={(e) => dispatch(setWidth(Number(e.target.value)))}
+              />
+            </label>
+          </div>
+
+          {/* Page style + Theme row */}
+          <div className="mt-3 flex items-center gap-2">
+            <div
+              className={`flex min-h-11 items-center rounded-md border p-1 ${
+                isDark ? "border-slate-700 bg-slate-950" : "border-slate-200 bg-white"
+              }`}
+            >
+              {pageTypes.map(({ id, label, Icon }) => (
+                <ToolButton
+                  key={id}
+                  label={label}
+                  active={pageStyle === id}
+                  theme={theme}
+                  onClick={() => dispatch(setPageStyle(id))}
+                >
+                  <Icon size={17} strokeWidth={1.8} />
+                </ToolButton>
+              ))}
+            </div>
+
+            <ToolButton
+              label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+              active={isDark}
+              theme={theme}
+              onClick={() => dispatch(toggleTheme())}
+            >
+              {isDark ? (
+                <Sun size={18} strokeWidth={1.8} />
+              ) : (
+                <Moon size={18} strokeWidth={1.8} />
+              )}
+            </ToolButton>
+          </div>
+        </div>
+      )}
+
+      {/* Desktop: Original horizontal toolbar */}
       <div
-        className={`whiteboard-tool-dock fixed bottom-16 sm:bottom-4 left-1/2 z-30 ${
-          isMobileMenuOpen ? "flex" : "hidden sm:flex"
-        } w-[calc(100vw-2rem)] sm:w-max max-w-full flex-wrap justify-center -translate-x-1/2 items-center gap-2 rounded-xl border p-2 shadow-2xl backdrop-blur ${surfaceClass}`}
+        className={`whiteboard-tool-dock fixed bottom-4 left-1/2 z-30 hidden sm:flex w-max max-w-full -translate-x-1/2 items-center gap-2 rounded-lg border p-2 shadow-lg backdrop-blur ${surfaceClass}`}
       >
-        <div className="flex flex-wrap justify-center items-center gap-1">
+        <div className="flex items-center gap-1">
           {tools.map(({ id, label, Icon }) => (
             <ToolButton
               key={id}
@@ -368,7 +487,7 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
           ))}
         </div>
 
-        <div className={`hidden sm:block h-8 w-px shrink-0 ${isDark ? "bg-slate-700" : "bg-slate-200"}`} />
+        <div className={`h-8 w-px shrink-0 ${isDark ? "bg-slate-700" : "bg-slate-200"}`} />
 
         <button
           type="button"
@@ -415,10 +534,10 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
           />
         </label>
 
-        <div className={`hidden sm:block h-8 w-px shrink-0 ${isDark ? "bg-slate-700" : "bg-slate-200"}`} />
+        <div className={`h-8 w-px shrink-0 ${isDark ? "bg-slate-700" : "bg-slate-200"}`} />
 
         <div
-          className={`flex flex-wrap justify-center min-h-11 items-center rounded-md border p-1 ${
+          className={`flex min-h-11 items-center rounded-md border p-1 ${
             isDark ? "border-slate-700 bg-slate-950" : "border-slate-200 bg-white"
           }`}
         >
