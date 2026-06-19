@@ -142,8 +142,8 @@ const ColorPicker = ({ color, opacity, onColorChange, onOpacityChange }) => {
         />
       </div>
 
-      <div className="mt-4 grid grid-cols-[5.25rem_minmax(0,1fr)_3.5rem] gap-3">
-        <label className="block min-w-0">
+      <div className="mt-4 flex flex-wrap gap-3">
+        <label className="block w-[5.25rem] min-w-0">
           <span className="sr-only">Color format</span>
           <select
             aria-label="Color format"
@@ -156,7 +156,7 @@ const ColorPicker = ({ color, opacity, onColorChange, onOpacityChange }) => {
             <option value="hsl">HSL</option>
           </select>
         </label>
-        <label className="flex min-h-11 min-w-0 items-center gap-2 rounded-md border border-slate-200 bg-white px-3 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+        <label className="order-3 flex min-h-11 min-w-0 flex-[1_0_100%] items-center gap-2 rounded-md border border-slate-200 bg-white px-3 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
           <span
             className="h-4 w-4 shrink-0 rounded-full"
             style={{ backgroundColor: color, opacity }}
@@ -179,7 +179,7 @@ const ColorPicker = ({ color, opacity, onColorChange, onOpacityChange }) => {
             }}
           />
         </label>
-        <label className="flex min-h-11 min-w-0 items-center rounded-md border border-slate-200 bg-white px-2 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+        <label className="ml-auto flex min-h-11 w-20 min-w-0 items-center rounded-md border border-slate-200 bg-white px-2 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
           <span className="sr-only">Opacity percent</span>
           <input
             className="w-full bg-transparent text-right text-sm font-medium text-slate-800 outline-none"
