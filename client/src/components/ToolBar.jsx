@@ -352,9 +352,9 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
       <div
         className={`whiteboard-tool-dock fixed bottom-4 left-1/2 z-30 ${
           isMobileMenuOpen ? "flex" : "hidden sm:flex"
-        } w-max max-w-[calc(100vw-1rem)] flex-wrap justify-center -translate-x-1/2 items-center gap-2 rounded-lg border p-2 shadow-lg backdrop-blur ${surfaceClass}`}
+        } w-fit max-w-[calc(100vw-1rem)] flex-wrap justify-center -translate-x-1/2 items-center gap-2 rounded-lg border p-2 shadow-lg backdrop-blur ${surfaceClass}`}
       >
-        <div className="flex items-center gap-1">
+        <div className="flex flex-wrap justify-center items-center gap-1">
           {tools.map(({ id, label, Icon }) => (
             <ToolButton
               key={id}
@@ -418,7 +418,7 @@ const ToolBar = ({ roomId, onCreateRoom, onJoinRoom, onLeaveRoom }) => {
         <div className={`hidden sm:block h-8 w-px shrink-0 ${isDark ? "bg-slate-700" : "bg-slate-200"}`} />
 
         <div
-          className={`flex min-h-11 items-center rounded-md border p-1 ${
+          className={`flex flex-wrap justify-center min-h-11 items-center rounded-md border p-1 ${
             isDark ? "border-slate-700 bg-slate-950" : "border-slate-200 bg-white"
           }`}
         >
